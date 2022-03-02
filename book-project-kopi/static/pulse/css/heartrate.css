@@ -1,0 +1,305 @@
+/* ## VIDEO ## */
+
+#vid {
+  position: relative;
+  width: 450px;
+  height: 300px;
+}
+
+#canvas {
+  position: absolute;
+  display: inline-block;
+  width: 450px;
+  height: 300px;
+}
+
+.center {
+  margin: auto;
+  position: relative;
+}
+
+.clear {
+  margin: 0;
+}
+
+#canvasOverlay {
+  position: absolute;
+  top: 0px;
+  z-index: 100001;
+  display: block;
+}
+
+.blur {
+  filter: blur(10px);
+  -webkit-filter: blur(10px);
+  -o-filter: blur(10px);
+  -ms-filter: blur(10px);
+  -moz-filter: blur(10px);
+  filter: url(blur.xml#blurred);
+}
+
+.border {
+  width: 360px;
+  height: 270px;
+  border: 37px solid #E1F1F1;
+  z-index: 1;
+  right: -30px;
+  top: -30px;
+  position: absolute;
+}
+
+#border {
+  position: absolute;
+}
+
+
+/* ## BUTTON ## */
+
+#buttonBar {
+  width: 385px;
+  margin: auto;
+  z-index: 10002;
+  position: relative;
+  right: -9px;
+}
+
+
+/* ## GRAPHS ## */
+
+#graphs {
+  position: relative;
+  top: 0px;
+  z-index: -1;
+  /*width: 1300px;*/
+  width: 95%;
+  margin: auto;
+  height: 200px;
+}
+
+#confidenceGraph {
+  width: 600px;
+  height: 160px;
+  margin: 20px;
+}
+
+.graph {
+  float: left;
+  margin: 20px;
+}
+
+#confidenceGraph {
+  float: left;
+}
+
+#heartbeat {
+  height: 400px;
+  width: 400px;
+}
+
+#main path {
+  stroke: steelblue;
+  stroke-width: 2;
+  fill: none;
+}
+
+#rawDataLabel {
+  font-size: 12pt;
+  color: steelblue;
+  position: relative;
+  /* top: -75px;
+  float: left;
+  right: -20px;*/
+  display: none;
+  right: 625px;
+  top: 175px;
+}
+
+.axis {
+  shape-rendering: crispEdges;
+}
+
+.x.axis .minor {
+  stroke-opacity: .5;
+}
+
+.x.axis path {
+  display: none;
+}
+
+
+/* ------- splash.html ------- */
+
+#container {
+  width: 600px;
+  margin: 0 auto;
+  display: block;
+}
+
+#transparentPulse {
+  z-index: 10001;
+}
+
+#overlay {
+  position: absolute;
+  top: 150px;
+  width: 600px;
+  height: 300px;
+  z-index: 101;
+}
+
+.begin {
+  position: relative;
+  margin: 0 auto;
+  top: 100px;
+  width: 150px;
+  padding: 20px;
+  z-index: 1001;
+}
+
+#hidden {
+  float: right;
+  margin: 0 60px 0 0;
+  /*display: none;*/
+}
+
+.hide {
+  display: none;
+}
+
+#arrow {
+  margin: 50px 0;
+  width: 0;
+  height: 0;
+  border-top: 200px solid #66A18B;
+  border-left: 200px solid transparent;
+  /*-webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);*/
+  position: relative;
+  display: block;
+}
+
+#arrow:after {
+  display: block;
+  width: 180px;
+  height: 180px;
+  background: #66A18B;
+  position: absolute;
+  content: "";
+  top: -130px;
+  left: -250px;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+}
+
+#allowWebcam {
+  top: -40px;
+  right: 100px;
+  position: relative;
+  /*display: none;*/
+}
+
+#pulse {
+  position: relative;
+  top: 100px;
+}
+
+
+/* ## SPLASH PAGE GRAPH ## */
+
+#graph {
+  width: 600px;
+  height: 210px;
+  position: relative;
+  top: 180px;
+  /*top: -260px;*/
+  z-index: -1;
+  background-color: #DA755C;
+}
+
+.waveform {
+  fill: none;
+  stroke: white;
+  stroke-width: 1.5px;
+}
+
+
+/* ## CSS Animations ##
+borrowed with love from: http://www.justinaguilar.com/animations/
+ */
+
+.pulse {
+  animation-name: pulse;
+  -webkit-animation-name: pulse;
+  animation-duration: 1.5s;
+  -webkit-animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+  -webkit-animation-iteration-count: infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.9);
+    opacity: 0.7;
+  }
+}
+
+@-webkit-keyframes pulse {
+  0% {
+    -webkit-transform: scale(0.95);
+    opacity: 0.7;
+  }
+  50% {
+    -webkit-transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: scale(0.95);
+    opacity: 0.7;
+  }
+}
+
+
+/* ## INSTRUCTIONS ## */
+
+#introduction {
+  display: none;
+  background-color: rgba( 225, 241, 241, 0.75);
+  width: 550px;
+  height: 400px;
+  z-index: 1002;
+  position: relative;
+  margin: auto;
+  top: -150px;
+  padding: 25px;
+}
+
+#next,
+#skip {
+  font-size: 1.5em;
+  color: #3E3D45;
+  padding: 10px;
+  position: absolute;
+  bottom: 0;
+}
+
+#next:hover,
+#skip:hover {
+  background-color: #2B8A81;
+  color: #E1F1F1;
+}
+
+#next {
+  left: 525px;
+}
