@@ -1,0 +1,61 @@
+{% extends "_base.html" %}
+{% load static %}
+{% block title %}Emotion Detection{% endblock %}
+<!DOCTYPE html>
+<html>
+{% block content %}
+  <link rel="stylesheet" href="/static/style.css" />
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="http://evaluering.eplads.dk/face-api.js/dist/face-api.js"></script>
+  <canvas id="plotting_canvas" width="522" height="753" style="cursor: crosshair; position: fixed;"></canvas>
+  
+
+  <div class="container px-4 px-4 d-flex justify-content-center">
+    <!-- Heading Row-->
+    <div class="row gx-4 gx-lg-5 align-items-center my-5">
+        <div class="col-lg-7">
+          <div class="container justify-content-center" style="margin: auto !important;">
+            <div style="flex: 1; height: 100%; overflow-x: scroll;">
+              <div id="main-body" style="display: flex;flex-direction: row;justify-content: center;width:100%;height: calc(100% - 100px);">
+                <div id="main" style="display: flex; gap: 20px; align-items: flex-start; margin: 0px auto; overflow: hidden; overflow-y: scroll;">
+                  <video id="video2" playsinline="" style="display: none;" width="600" height="500">
+                    <source id="source" type="video/mp4">
+                  </video>
+                  
+      
+                </div>
+              </div>
+
+            <!-- data form -->
+            <form name="data_form" method="post">
+              {% csrf_token %}
+              <input type="hidden" name="faces" value="">
+              <input type="hidden" name="angry" value="">
+              <input type="hidden" name="disgusted" value="">
+              <input type="hidden" name="fearful" value="">
+              <input type="hidden" name="happy" value="">
+              <input type="hidden" name="neutral" value="">
+              <input type="hidden" name="sad" value="">
+              <input type="hidden" name="surprised" value="">
+            </form>
+          </div>
+        </div>
+        <div class="col-lg-4">
+            <h1 class="font-weight-light">Profilering Apps</h1>
+            <p>Her kan du eksperimentere med de to AI modeller: Gaze-detection & Emotion-detection. Gaze-detection kan tracke retningen på dit blik, 
+                og orienteringen på dit hoved. Eksperimentet bliver automatisk gemt efter hvert eksperiment, og kan tilgåes under fanen "Data".
+                Emotion-detection kan tracke humør, alder, køn, samt difference mellem to ansigter.
+            
+            </p>
+            <p>
+              <div id="stopwatch">00:00:00:00</div>
+              <button class="btn btn-secondary" id="start">Start</button>
+              <button class="btn btn-secondary" id="pause" onclick="stop()">Stop</button>
+            </p>
+        </div>
+    </div>
+  </div>
+
+<script src="/static/emotion1/logic.js" type="text/javascript"></script>
+{% endblock %}
+</html>
