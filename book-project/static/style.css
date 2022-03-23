@@ -47,10 +47,23 @@ body {
 .card-img-top {
   height: 40vh;
   min-width: 100%;
+  /* aspect-ratio: auto 640 / 480; */
 }
 
+.card-img-top1 {
+  height: 45vh;
+  min-width: 100%;
+  aspect-ratio: auto 640 / 480;
+}
+
+
 .card-width {
-  width: 80%;
+  width: 40%; 
+}
+
+.card-width1 {
+  width: 75%;
+  height: 100%; 
 }
 
 .container {

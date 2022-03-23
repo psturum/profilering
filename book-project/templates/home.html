@@ -6,7 +6,7 @@
 
 {% block content %}
 <link rel="stylesheet" href="/static/style.css" />
-
+<main class="container mt-4 mt-lg-5">
 <div class="container px-4 px-4 d-flex justify-content-center">
     <!-- Heading Row-->
     <div class="row gx-4 gx-lg-5 align-items-center my-5">
@@ -40,10 +40,10 @@
             <h1 class="font-weight-light">Profilering Apps</h1>
             <p>Her kan du eksperimentere med de to AI modeller: Gaze-detection & Emotion-detection. Gaze-detection kan tracke retningen på dit blik, 
                 og orienteringen på dit hoved. Eksperimentet bliver automatisk gemt efter hvert eksperiment, og kan tilgåes under fanen "Data".
-                Emotion-detection kan tracke humør, alder, køn, samt difference mellem to ansigter.
+                Emotion-detection kan tracke humør, alder, køn, samt forskellen mellem to ansigter.
             
             </p>
-            <button type="button" class="btn btn-outline-light btn-lg" data-mdb-ripple-color="dark">Apps <i class="fa-brands fa-app-store"></i></button>
+            <a type="button" class="btn btn-outline-light btn-lg" data-mdb-ripple-color="dark" href="{% url 'programs' %}">Apps <i class="fa-brands fa-app-store"></i></a>
         </div>
     </div>
 </div>
@@ -54,7 +54,7 @@
         <div class="col-lg-6" >
             <h1 class="font-weight-light">Data Visualisering</h1>
             <p >Dataen fra eksperimenterne bliver automatisk gemt under fanen data, hvor du kan sammenligne din data, med data fra dine klassekammerater og andre gymnasier i Danmark. Der er også mulighed for at se grafer, og hente csv(data) filer fra tidligere eksperimenter. </p>
-            <button type="button" class="btn btn-outline-light btn-lg" data-mdb-ripple-color="dark">Data <i class="fa fa-chart-column"></i></button>
+            <a type="button" class="btn btn-outline-light btn-lg" data-mdb-ripple-color="dark" href="{% url 'data' %}">Data <i class="fa fa-chart-column"></i></a>
         </div>
         <div class="col-lg-6">
             <div id="carouselExampleControls1" style="border:1px solid white;" class="carousel slide" data-bs-ride="carousel">
@@ -109,10 +109,11 @@
                 hvordan it-virksomheder høster din data, for så at sælge den for profit, eller anvende den til 'targeting ads'.
 
             </p>
-            <button type="button" class="btn btn-outline-light btn-lg" data-mdb-ripple-color="dark">Profil <i class="fa-regular fa-user"></i></button>
+            <a type="button" class="btn btn-outline-light btn-lg" data-mdb-ripple-color="dark" href="{% url 'profile' %}">Profil <i class="fa-regular fa-user"></i></a>
             <button type="button" class="btn btn-outline-primary btn-lg" data-mdb-ripple-color="dark">Læs mere <i class="fa-solid fa-circle-info"></i></button>
     </div>
 </div>
+</main>
 
 {% endblock content %}
 {% block footer %}

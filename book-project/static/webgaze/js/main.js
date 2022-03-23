@@ -1,3 +1,6 @@
+var check = 0;
+var data_scatter = [];
+var isRecording = false;
 window.onload = async function() {
 
     webgazer.params.showVideoPreview = true;
@@ -5,7 +8,16 @@ window.onload = async function() {
     await webgazer.setRegression('ridge') /* currently must set regression and tracker */
         //.setTracker('clmtrackr')
         .setGazeListener(function(data, clock) {
-          //   console.log(data); /* data is an object containing an x and y key which are the x and y prediction coordinates (no bounds limiting) */
+            // console.log(data);
+            if(data != null){
+                document.getElementById("pred-x").innerText = "Prediction-X: " + parseInt(data.x);
+                document.getElementById("pred-y").innerText = "Prediction-Y: " + parseInt(data.y);
+            }
+            if(isRecording){
+                data_scatter.push([data.x, data.y])
+            }
+            
+             /* data is an object containing an x and y key which are the x and y prediction coordinates (no bounds limiting) */
           //   console.log(clock); /* elapsed time in milliseconds since webgazer.begin() was called */
         })
         .saveDataAcrossSessions(false)
@@ -22,53 +34,90 @@ window.onload = async function() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
         canvas.style.position = 'fixed';
+        canvas.style.top = '0px';
     };
     setup();
+    var seconds = 00; 
+  var tens = 00; 
+  var appendTens = document.getElementById("tens")
+  var appendSeconds = document.getElementById("seconds")
+  var buttonStart = document.getElementById('button-start');
+  var buttonStop = document.getElementById('button-stop');
+  var buttonReset = document.getElementById('button-reset');
+  var buttonGraph = document.getElementById('button-graph');
+  var buttonSubmit = document.getElementById('button-submit');
+  var Interval ;
+
+  buttonStart.onclick = function() {
+    document.getElementById("button-start").disabled = true;
+    document.getElementById("button-stop").disabled = false;
+    isRecording = true;
+    clearInterval(Interval);
+    Interval = setInterval(startTimer, 10);
+  }
+  
+  buttonStop.onclick = function() {
+    document.getElementById("group1").style.display = 'none';
+    document.getElementById("group2").style.display = 'inline-flex';
+    document.getElementById("button-start").disabled = false;
+    document.getElementById("button-stop").disabled = true;
+    isRecording = false;
+    clearInterval(Interval);
+  }
+
+  buttonReset.onclick = function() {
+    clearInterval(Interval);
+    data_scatter = [];
+    tens = "00";
+    seconds = "00";
+    appendTens.innerHTML = tens;
+    appendSeconds.innerHTML = seconds;
+    isRecording = false;
+    document.getElementById("group1").style.display = 'inline-flex';
+    document.getElementById("group2").style.display = 'none';
+    drawChart();
+ }
+
+  buttonGraph.onclick = function() {
+    drawChart();
+  }
+
+  buttonSubmit.onclick = function() {
+  }
+
+  
+   
+  
+  function startTimer () {
+    tens++; 
+    
+    if(tens <= 9){
+      appendTens.innerHTML = "0" + tens;
+    }
+    
+    if (tens > 9){
+      appendTens.innerHTML = tens;
+      
+    } 
+    
+    if (tens > 99) {
+      console.log("seconds");
+      seconds++;
+      appendSeconds.innerHTML = "0" + seconds;
+      tens = 0;
+      appendTens.innerHTML = "0" + 0;
+    }
+    
+    if (seconds > 9){
+      appendSeconds.innerHTML = seconds;
+    }
+  
+  }
+    
 
 };
 
-var gazes = [];
-var frame = 0;
-var isRecording = false;
-var up = 0;
-var screen = 0;
-var down = 0;
 
-function start(){
-  isRecording = true;
-  recordGaze();
-  gazes = [];
-  frame = 0;
-}
-
-// start recording
-function recordGaze() {
-    webgazer
-      .setGazeListener(function(data, elapsedTime) {
-        if (isRecording) {
-          if (data == null) {
-            return;
-          }
-  
-          var timestamp = Date.now();
-          var xprediction = data.x;
-          var yprediction = data.y;
-  
-          gazes.push([timestamp, frame, xprediction, yprediction]);
-        //   console.log(gazes);
-          frame += 1;
-          if (yprediction > 1000){
-            down += 1;
-          }
-          if (yprediction > 100 && yprediction < 1000){
-            screen += 1;
-          }
-          if (yprediction < 100){
-            up += 1;
-          }
-        }
-      })
-  }
 
 // Set to true if you want to save the data even if you reload the page.
 window.saveDataAcrossSessions = false;
@@ -81,78 +130,32 @@ window.onbeforeunload = function() {
  * Restart the calibration process by clearing the local storage and reseting the calibration point
  */
 function Restart(){
-    document.getElementById("Accuracy").innerHTML = "<a>Not yet Calibrated</a>";
+    // document.getElementById("Accuracy").innerHTML = "<a>Not yet Calibrated</a>";
     webgazer.clearData();
-    isRecording = false;
     ClearCalibration();
     PopUpInstruction();
 }
+google.charts.load('current', {'packages':['corechart']});
+// google.charts.setOnLoadCallback(drawChart);
 
-function submit(){
-    document.forms['data_form'].elements['size'].value = frame
-    document.forms['data_form'].elements['up'].value = up
-    document.forms['data_form'].elements['screen'].value = screen
-    document.forms['data_form'].elements['down'].value = down
-    document.forms['data_form'].submit();
+function drawChart() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('number', 'x');
+    data.addColumn('number', 'y');
+    data.addRows(data_scatter);
+
+    var options = {
+        hAxis: {title: 'Prediction-X', minValue: 0, maxValue: 15},
+        vAxis: {title: 'Prediction-Y', minValue: 0, maxValue: 15},
+        legend: 'none'
+    };
+
+    var chart = new google.visualization.ScatterChart(document.getElementById('chart'));
+    chart.draw(data, options);
 }
+$(window).resize(function(){
+    console.log(data_scatter)
+    drawChart();
+});
 
-function stop(){
-    isRecording = false;
-}
 
-function summary() {
-    console.log(frame)
-    // document.getElementById('frames').innerText = frame;
-    var points = [];
-    gazes.forEach(function(gaze) {
-      var currpoint = {};
-      currpoint = {
-        x: gaze[2],
-        y: gaze[3]
-      };
-      points.push(currpoint);
-    });
-  
-    document.getElementById("chartContainer").innerHTML = '<canvas id="myChart"></canvas>';
-    var ctx = document.getElementById("myChart").getContext("2d");
-  
-    new Chart(ctx, {
-      type: 'scatter',
-      data: {
-        datasets: [{
-          label: 'Gaze Targets',
-          data: points,
-          pointBackgroundColor: '#DA608C',
-          showLine: false
-        }]
-      },
-      options: {
-        legend: {
-          display: false
-        },
-        scales: {
-          xAxes: [{
-            type: 'linear',
-            position: 'bottom',
-            ticks: {
-              suggestedMin: 0,
-              suggestedMax: parseInt(document.getElementById('plotting_canvas').width, 10)
-                // max: 1700,
-                // min: -205
-            }
-          }],
-          yAxes: [{
-            type: 'linear',
-            ticks: {
-              suggestedMin: 0,
-              suggestedMax: parseInt(document.getElementById('plotting_canvas').height, 10),
-              reverse: true
-                // max: 1400,
-                // min: -270
-            }
-          }]
-        }
-      }
-    });
-  
-  };

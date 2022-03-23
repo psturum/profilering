@@ -9,12 +9,13 @@
 <html lang="en">
     {% block content %}
     <link rel="stylesheet" href="/static/style.css" />
-    <div class="container " style="color:black">
+    <main class="container mt-4 mt-lg-5">
+    <div class="container justify-content-center">
         <div class="row row-cols-1 row-cols-md-2 g-4">
             <div class="col-auto center-col">
-                <div class="card card-width">
+                <div class="card card-width1">
                     <img src="{% static 'img/face.png' %}" class="card-img-top" alt="...">
-                    <div class="card-body">
+                    <div class="card-body dark">
                         <h5 class="card-title">Emotion Detection</h5>
                         <p class="card-text dark">Some dummy text to make up the card's content. You can replace it anytime.</p>
                         <form class="row g-3">
@@ -37,11 +38,12 @@
                 </div>
             </div>
             <div class="col-auto center-col">
-                <div class="card card-width">
+                <div class="card card-width1">
                     <img src="{% static 'img/gaze-cloud.png' %}" class="card-img-top" alt="...">
-                    <div class="card-body">
+                    <div class="card-body dark">
                         <h5 class="card-title">Gaze Detection</h5>
                         <p class="card-text dark">Some dummy text to make up the card's content. You can replace it anytime.</p>
+
                         <form class="row g-3">
                             <div class="col-auto">
                               <label for="inputPassword2" class="visually-hidden"></label>
@@ -75,6 +77,7 @@
             </div>
         </div>
     </div>
+    </main>
     {% endblock content %}
     {% block footer %}
         <!-- footer when size >= large -->
