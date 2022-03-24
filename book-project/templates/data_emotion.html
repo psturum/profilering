@@ -1,0 +1,126 @@
+{% extends "_base.html" %}
+{% load static %}
+{% block title %}Mine markeder{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="/static/style.css" />
+<main class="container mt-4 mt-lg-5">
+<h3 class="mt-5 mb-3">
+  Emotion data
+</h3>
+
+{% if emotion_data %}
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <table class="table table-light table-hover" style="border:1px solid black;">
+
+            <thead class="table-dark cream">
+                <tr class="#dfe0e1">
+                    <th>Data</th>
+                    <th>Graf</th>
+                    <th>CSV</th>
+                    <th>Oprettet</th>
+                    <th>Dominerende humør</th>
+                    <th>Størrelse</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for data in emotion_data %}
+
+                  <script type="text/javascript">
+                      
+                    google.charts.load('current', {'packages':['bar']});
+                    google.charts.setOnLoadCallback(drawStuff);
+                    
+                
+                    function drawStuff() {
+                      var data = new google.visualization.arrayToDataTable([
+                            ['Humør', 'Antal observeret'],
+                            ['Angry', parseFloat("{{ data.angry }}")],
+                            ['Disgusted', parseFloat("{{ data.disgusted }}")],
+                            ['Fearful', parseFloat("{{ data.fearful }}")],
+                            ['Happy', parseFloat("{{ data.happy }}")],
+                            ['Neutral', parseFloat("{{ data.neutral }}")],
+                            ['Sad', parseFloat("{{ data.sad }}")],
+                            ['Surprised',parseFloat("{{ data.surprised }}")],
+                        ]);
+                
+                      var options = {
+                        legend: { position: 'none' },
+                        colors: ['black'],
+                        chart: {
+                        },
+                        axes: {
+                        },
+                        bar: { groupWidth: "60%" },
+                        hAxis : { 
+                          textStyle : {
+                              fontSize: 18 // or the number you want
+                          }
+                        },
+                        vAxis : { 
+                          textStyle : {
+                              fontSize: 18 // or the number you want
+                          }
+                        },
+                      };
+                
+                      var chart = new google.charts.Bar(document.getElementById("{{ data.title }}"));
+                      var title = "{{ data.title }}"
+                      console.log(title)
+                      // Convert the Classic options to Material options.
+                      chart.draw(data, google.charts.Bar.convertOptions(options));
+                    };
+                    $(window).resize(function(){
+                        drawStuff();
+                      });
+                  </script>
+                  <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom{{ data.title }}" aria-labelledby="offcanvasBottom{{ data.title }}" style="height: 80%; overflow-y: hidden !important;">
+                    <div class="container justify-content-center">
+                    <div class="offcanvas-header">
+                      <h5 class="offcanvas-title" id="offcanvasBottomLabel">{{ data.title }}</h5>
+                      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body large" style="overflow-y: hidden !important; overflow-y: hidden !important;">
+                      <div class="col-8">
+                      <div id="{{ data.title }}" class="chart" style="width: 100%; min-height: 500px; color:wheat"></div>
+                      </div>
+                    </div>
+                    </div>
+                  </div>
+                  
+                    <td><a href="#">{{ data.title }}</a></td>
+                    <td>
+                        <button type="button" id="{{ data.title }}" class="btn btn-secondary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom{{ data.title }}" aria-controls="offcanvasBottomLabel">
+                            Vis graf
+                            <i class="fa-solid fa-eye"></i>
+                          </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-secondary" disabled>
+                            Download CSV
+                            <i class="fa-solid fa-download"></i>
+                        </button> 
+                    </td>
+                    <td>{{ data.created_at }}</td>
+                    <td>
+                        {{ data.dominant }}
+                    </td>
+                    <td>
+                       {{ data.faces }}
+                    </td>    
+                    <td>  
+                        <button class="btn btn-danger">
+                            Slet
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>                       
+                    </td>
+                </tr>
+     
+            {% endfor %}
+          </tbody>
+        </table>
+
+      </main>
+{% endif %}
+{% endblock %}
