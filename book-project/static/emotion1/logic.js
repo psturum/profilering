@@ -27,7 +27,10 @@ async function updateResults() {
     const ts = Date.now()
     const displaySize = { width: videoEl.width, height: videoEl.height }
 
-    const result = await faceapi.detectSingleFace(videoEl).withFaceExpressions()
+    const result = await faceapi
+              .detectSingleFace(videoEl)
+              .withFaceExpressions();
+ 
 
     updateTimeStats(Date.now() - ts)
 
