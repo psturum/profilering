@@ -1,0 +1,120 @@
+{% extends "_base.html" %}
+{% load static %}
+
+{% block title %}Profile{% endblock %}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+    {% block content %}
+    <link href="{% static "style.css" %}" rel="stylesheet" />
+    <main class="container mt-4 mt-lg-5">
+      <div class="container justify-content-center">
+          <div class="row row-cols-1 row-cols-md-2 g-4">
+              <div class="col-auto center-col">
+                  <div class="card card-width1">
+                      <img src="{% static 'img/gear.png' %}" class="card-img-top" alt="..." style="background-color: #181818;">
+                      <div class="card-body dark">
+                          <h5 class="card-title">Essentiel data</h5>
+                          <table class="table table-striped">
+                            <thead>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <th scope="row"> Brugernavn</th>
+                                <td>{{ user.username }}</td>
+                              </tr>
+                              <tr>
+                                <th scope="row"> Password</th>
+                                <td>********</td>
+                              </tr>
+                              <tr>
+                                <th scope="row"> Skole</th>
+                                <td>{{ user.skole }}</td>
+                              </tr>
+                              <tr>
+                                <th scope="row"> Fag</th>
+                                <td>{{ user.fag }}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <button type="button" class="btn btn-outline-danger" data-mdb-ripple-color="dark">Slet Bruger </button>
+                          <button type="button" class="btn btn-outline-primary" data-mdb-ripple-color="dark">Genstart Data </button>
+
+                      </div>
+                  </div>
+              </div>
+              <div class="col-auto center-col">
+                  <div class="card card-width1">
+                      <img src="{% static 'img/money1.png' %}" class="card-img-top" alt="..." style="background-color: #181818;">
+                      <div class="card-body dark">
+                          <h5 class="card-title">Marketing data</h5>
+                          <table class="table table-striped">
+                            <thead>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <th scope="row"> Alder</th>
+                                <td>{{ user.alder }}</td>
+                              </tr>
+                              <tr>
+                                <th scope="row"> Køn</th>
+                                <td>{{ user.køn }}</td>
+                              </tr>
+                              <tr>
+                                <th scope="row"> Koncentrationsevne</th>
+                                <td>{{ user.koncentrationsevne }}</td>
+                              </tr>
+                              <tr>
+                                <th scope="row"> Humør</th>
+                                <td>{{ user.sidste_humør }}</td>
+                              </tr>
+                              <tr>
+                                <th scope="row"> IT-færdigheder</th>
+                                <td>{{ user.it_færdighed }}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </main>
+    {% endblock content %}
+    {% block footer %}
+        <!-- footer when size >= large -->
+        <nav class="py-3 d-none d-lg-block bg-light">
+            <div class="container">
+                <div class="d-flex text-center justify-content-between flex-row">
+                    <a href="https://dataekspeditioner.dk/"><img src="{% static 'img/dataekspeditioner_sort.png' %}" class="pt-4 pb-5 pb-md-0" width="240" alt="dataekspeditioner-logo"></a>
+                    <a href="https://ku.dk"><img src="{% static 'img/ku_logo_dk_hh-300x112.png' %}" class="px-5"  width="310"  alt="Københavns Universitet"></a>
+                    <a href="https://novonordiskfonden.dk/da/"><img src="{% static 'img/NNF_blue_RGB_solid.png' %}" class="pt-1 pr-3" width="110" alt="Novo Nordisk Fonden"></a> 
+                </div>
+            </div>
+        </nav>
+
+        <!-- footer when small <= size < largen -->
+        <div class="d-none d-sm-block d-lg-none">
+            <nav class="py-4 px-sm-5 bg-light">
+                <div class="d-flex justify-content-between flex-row bg-light">
+                    <a href="https://dataekspeditioner.dk/"><img src="{% static 'img/dataekspeditioner_sort.png' %}" class="pt-3 pl-3" width="150" alt="dataekspeditioner-logo"></a>
+                    <a href="https://ku.dk"><img src="{% static 'img/ku_logo_dk_hh-300x112.png' %}" class="px-2" width="150"  alt="Københavns Universitet"></a>
+                    <a href="https://novonordiskfonden.dk/da/"><img src="{% static 'img/NNF_blue_RGB_solid.png' %}" class="pr-3" width="80" alt="Novo Nordisk Fonden"></a> 
+                </div>
+            </nav>  
+        </div>
+
+        <!-- footer when size < small -->
+        <div class="d-sm-none">
+            <nav class="py-4 px-sm-5 bg-light">
+                <div class="d-flex justify-content-between flex-row bg-light">
+                    <a href="https://dataekspeditioner.dk/"><img src="{% static 'img/dataekspeditioner_sort.png' %}" class="pt-2 pl-2" width="130" alt="dataekspeditioner-logo"></a>
+                    <a href="https://ku.dk"><img src="{% static 'img/ku_logo_dk_hh-300x112.png' %}" class="px-2" width="120"  alt="Københavns Universitet"></a>
+                    <a href="https://novonordiskfonden.dk/da/"><img src="{% static 'img/NNF_blue_RGB_solid.png' %}" class="pr-3" width="70" alt="Novo Nordisk Fonden"></a> 
+                </div>
+            </nav>  
+        </div>
+    {% endblock footer %}
+</html>
