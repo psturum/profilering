@@ -156,7 +156,17 @@ function summary() {
     document.forms['data_form'].elements['sad'].value = data[6];
     document.forms['data_form'].elements['surprised'].value = data[7];
     let formattedRecords = formatRecords();
+   
+    for (let i = 0; i < formattedRecords.length; i++) {
+      for (let j = 0; j < formattedRecords[i].length; j++) {
+          if (formattedRecords[i][j] == null) {
+              formattedRecords[i][j] = "";
+          }
+      }
+    }
+
     let csv_file = new Blob([makeCSV(formattedRecords)]);
+    
     document.forms['data_form'].elements['data'].value = csv_file;
     document.forms['data_form'].submit();
   };
@@ -164,6 +174,12 @@ function summary() {
 function makeCSV(rows) {
   return rows.map(r => r.join(",")).join("\n");
 }
+
+function removeEl(array, remIdx) {
+  return array.map(function(arr) {
+          return arr.filter(function(el,idx){return idx !== remIdx});  
+         });
+ };
 
 window.onload = function () {
   

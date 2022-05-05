@@ -73,7 +73,9 @@ body {
   aspect-ratio: auto 640 / 480;
 }
 
-
+.card-light {
+  background-color: #181818 !important;
+}
 .card-width {
   width: 40%; 
 }
@@ -81,6 +83,7 @@ body {
 .card-width1 {
   width: 75%;
   height: 100%; 
+  background-color: #181818 !important;
 }
 
 .container {

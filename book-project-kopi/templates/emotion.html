@@ -34,23 +34,17 @@
                   <input type="hidden" name="neutral" value="">
                   <input type="hidden" name="sad" value="">
                   <input type="hidden" name="surprised" value="">
-                  <!-- <input type="hidden" name="data" value=""> -->
+                  <input type="hidden" name="data" value="">
                 </form>
-
-                <!-- <form name="market_form" method="post">
-                  {% csrf_token %}
-                  <input type="hidden" name="age" value="">
-                  <input type="hidden" name="gender" value="">
-                </form> -->
             
                 <div style="position: relative;">
-                  <video class="card-img-top bg-dark"  onloadedmetadata="updateResults(this)" id="inputVideo" autoplay muted playsinline></video>
+                  <video class="card-img-top"  onloadedmetadata="updateResults(this)" id="inputVideo" autoplay muted playsinline></video>
                   <canvas class="card-img-top" id="overlay" />
                 </div>
                 <div class="card-body text-center">
-                    <h5 class="card-title text-start">Emotion Detection</h5>
-                    <p class="card-text dark text-start">Denne AI model forudsiger ikke kun humør. Den kan også estimere dit køn og alder, hvilket profileringsappen udnytter til at udvikle marketing-data tilkoblet din profil.</p>
-                    <p class="dark"><span id="seconds">00</span>:<span id="tens">00</span></p>
+                    <h5 class="card-title light text-start">Emotion Detection</h5>
+                    <p class="card-text text-start">Denne AI model forudsiger ikke kun humør. Den kan også estimere dit køn og alder, hvilket profileringsappen udnytter til at udvikle marketing-data tilkoblet din profil.</p>
+                    <p><span id="seconds">00</span>:<span id="tens">00</span></p>
 
                     <div class="btn-group" id="group1" role="group" style="display: inline-flex;" aria-label="Basic checkbox toggle button group">
                       <!-- <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off"> -->
@@ -77,9 +71,9 @@
             </div>
           </div>
           <div class="col-md">
-            <div class="card" style="height: 630px; width: 120%;">
+            <div class="card card-light" style="height: 630px; width: 120%;">
               <div id="graph" class="chart" style="width: 100%; min-height: 450px; color:wheat;"></div>
-              <div class="card-body" style="min-height: 100px">
+              <div class="card-body light" style="min-height: 100px">
                 <h4>Data</h4>
                 <div class="row" style="padding: auto;">
                   <div class="col">
@@ -108,12 +102,7 @@
                   <div class="col">                 
                   </div>
                 </div>
-
-                
               </div>
-              <div class="card-footer bg-dark">
-                <small class="text-muted" style="color: white !important;">https://developers.google.com/chart</small>
-            </div>
           </div>
         </div>
       </div>
