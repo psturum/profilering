@@ -1,0 +1,110 @@
+{% extends "_base.html" %}
+{% load static %}
+
+{% block title %}Emotion Detection{% endblock %}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+{% block content %}
+<head>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="http://evaluering.eplads.dk/face-api.js/dist/face-api.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script src="/static/emotion1/logic.js"></script>
+  <link rel="stylesheet" href="/static/emotion1/styles.css">
+  
+</head>
+
+<body>
+      <main class="container mt-4 mt-lg-5">
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+          <div class="col-md " style="width:40%; min-width: 400px;">
+            <div class="card card-width1" style="height: 630px;">
+                <form name="data_form" method="post">
+                  {% csrf_token %}
+                  <input type="hidden" name="age" value="">
+                  <input type="hidden" name="gender" value="">
+                  <input type="hidden" name="faces" value="">
+                  <input type="hidden" name="angry" value="">
+                  <input type="hidden" name="disgusted" value="">
+                  <input type="hidden" name="fearful" value="">
+                  <input type="hidden" name="happy" value="">
+                  <input type="hidden" name="neutral" value="">
+                  <input type="hidden" name="sad" value="">
+                  <input type="hidden" name="surprised" value="">
+                  <input type="hidden" name="data" value="">
+                </form>
+            
+                <div style="position: relative;">
+                  <video class="card-img-top"  onloadedmetadata="updateResults(this)" id="inputVideo" autoplay muted playsinline></video>
+                  <canvas class="card-img-top" id="overlay" />
+                </div>
+                <div class="card-body text-center">
+                    <h5 class="card-title light text-start">Emotion Detection</h5>
+                    <p class="card-text text-start">Denne AI model forudsiger ikke kun humør. Den kan også estimere dit køn og alder, hvilket profileringsappen udnytter til at udvikle marketing-data tilkoblet din profil.</p>
+                    <p><span id="seconds">00</span>:<span id="tens">00</span></p>
+
+                    <div class="btn-group" id="group1" role="group" style="display: inline-flex;" aria-label="Basic checkbox toggle button group">
+                      <!-- <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off"> -->
+                      <button class="btn btn-success" id="button-start" for="btncheck1" onclick="">Start <i class="fa-solid fa-circle-play"></i></button>
+                    
+                      <!-- <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off"> -->
+                      <button class="btn btn-danger" id="button-stop" for="btncheck2" disabled>Stop <i class="fa-solid fa-circle-stop"></i></button>                  
+                    </div>  
+                    <div class="btn-group text-center" id="group2" role="group" style="display: none;" aria-label="Basic checkbox toggle button group">
+                      <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off">
+                      <label class="btn btn-warning" id="button-reset" for="btncheck2" >Genstart <i class="fa fa-refresh" aria-hidden="true"></i></label> 
+
+                      <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off">
+                      <label id="button-graph" class="btn btn-primary" for="btncheck1">Tegn Graf <i class="fa fa-chart-column"></i></label>
+                    
+                      <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off">
+                      <label id="button-submit" class="btn btn-success" for="btncheck2">Gem <i class="fa-solid fa-download"></i></label>                  
+                    </div>                    
+                </div>
+                      
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="card card-light" style="height: 630px; width: 120%;">
+              <div id="graph" class="chart" style="width: 100%; min-height: 450px; color:wheat;"></div>
+              <div class="card-body light" style="min-height: 100px">
+                <h4>Data</h4>
+                <div class="row" style="padding: auto;">
+                  <div class="col">
+                    <a id="angry">Angry: 0</a>
+                  </div>
+                  <div class="col">
+                    <a id="disgusted">Disgusted: 0</a>
+                  </div>
+                  <div class="col">
+                    <a id="fearful">Fearful: 0</a>
+                  </div>
+                  <div class="col">
+                    <a id="happy">Happy: 0</a>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <a id="neutral">Neutral: 0</a>
+                  </div>
+                  <div class="col">
+                    <a id="sad">Sad: 0</a>                  
+                  </div>
+                  <div class="col">
+                    <a id="surprised">Surprised: 0</a>                  
+                  </div>
+                  <div class="col">                 
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+      </main>
+      
+</body>
+{% endblock content %}
+</html>
