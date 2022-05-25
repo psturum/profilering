@@ -56,6 +56,8 @@ async function updateResults() {
         gender.push(result.gender)
         console.log(result.age)
         console.log(result.gender)
+        document.getElementById("age").innerText = "Alder: " + parseInt(result.age)
+        document.getElementById("gender").innerText = "Køn: " + result.gender
       }
     }
 
@@ -98,6 +100,10 @@ formatRecords = function() {
   return list_records;
 };
 
+function submit() {
+  document.forms['data_form'].submit();
+}
+
 
 function summary() {
   
@@ -128,8 +134,6 @@ function summary() {
     })
     newAge = newAge / age.length
 
-    console.log(newAge)
-
     newgender = "None";
     male = 0;
     female = 0;
@@ -140,11 +144,16 @@ function summary() {
         female++;
       }
     })
+
     if(male>female){
       newgender = "Male";
     } else {
       newgender = "Female";
     }
+
+
+    document.getElementById("age").innerText = "Alder: " + parseInt(newAge)
+    document.getElementById("gender").innerText = "Køn: " + newgender
 
     document.forms['data_form'].elements['age'].value = parseInt(newAge);
     document.forms['data_form'].elements['gender'].value = newgender
@@ -158,7 +167,6 @@ function summary() {
     document.forms['data_form'].elements['surprised'].value = data[7];
     csv_data = JSON.stringify(csv_data)
     document.forms['data_form'].elements['data'].value = csv_data;
-    document.forms['data_form'].submit();
   };
 
 function makeCSV(rows) {
@@ -198,6 +206,7 @@ window.onload = function () {
     document.getElementById("button-start").disabled = false;
     document.getElementById("button-stop").disabled = true;
     isRecording = false;
+    summary();
     clearInterval(Interval);
   }
 
@@ -208,6 +217,10 @@ window.onload = function () {
     gender = [];
     tens = "00";
     seconds = "00";
+    data1 = [0,0,0,0,0,0,0];
+    newAge = 0;
+    newgender = "n/a";
+    csv_data = [];
     appendTens.innerHTML = tens;
     appendSeconds.innerHTML = seconds;
     isRecording = false;
@@ -222,7 +235,7 @@ window.onload = function () {
   }
 
   buttonSubmit.onclick = function() {
-    summary();
+    submit();
   }
 
   
@@ -241,7 +254,6 @@ window.onload = function () {
     } 
     
     if (tens > 99) {
-      console.log("seconds");
       seconds++;
       appendSeconds.innerHTML = "0" + seconds;
       tens = 0;
@@ -330,6 +342,7 @@ function update_data() {
   var emotions = ['angry', 'disgusted', 'fearful', 'happy', 'neutral', 'sad', 'surprised'];
 
   data = [key_scores.reduce((a, b) => a + b, 0), 0, 0, 0, 0, 0, 0, 0]
+  data1 = data;
 
   records.forEach(function(frame, i) {
       let obj = frame['expressions'];
@@ -338,9 +351,6 @@ function update_data() {
       csv_data.push(obj);
   })
 
-  console.log(csv_data);
- 
-
   document.getElementById("angry").innerText = "Angry: " + data[1]
   document.getElementById("disgusted").innerText = "Disgusted: " + data[2]
   document.getElementById("fearful").innerText = "Fearful: " + data[3]
@@ -348,6 +358,5 @@ function update_data() {
   document.getElementById("neutral").innerText = "Neutral: " + data[5]
   document.getElementById("sad").innerText = "Sad: " + data[6]
   document.getElementById("surprised").innerText = "Surprised: " + data[7]
-  // drawStuff();
 
 }

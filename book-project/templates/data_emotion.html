@@ -9,16 +9,16 @@
         {% if emotion_data %}
             <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-            <table class="table table-light table-hover" style="border:1px solid white; --bs-table-bg: #181818; color: white;">
+            <table class="table table-light table-hover" style="--bs-table-bg: #181818; color: white;">
 
                 <thead class="table-dark cream" style="--bs-table-bg: #181818">
                     <tr class="#dfe0e1">
-                        <th>Data</th>
-                        <th>Graf</th>
-                        <th>CSV</th>
-                        <th>Oprettet</th>
-                        <th>Dominerende humør</th>
-                        <th>Størrelse</th>
+                        <th style="font-size: 20px !important;">Data</th>
+                        <th style="font-size: 20px !important;">Graf</th>
+                        <th style="font-size: 20px !important;">CSV</th>
+                        <th style="font-size: 20px !important;">Oprettet</th>
+                        <th style="font-size: 20px !important;">Dominerende humør</th>
+                        <th style="font-size: 20px !important;">Størrelse</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -44,8 +44,12 @@
                             ]);
                     
                         var options = {
+                            backgroundColor: {
+                                fill: 'black',
+                                fillOpacity: 0
+                            },
                             legend: { position: 'none' },
-                            colors: ['black'],
+                            colors: ['white'],
                             chart: {
                             },
                             axes: {
@@ -53,14 +57,23 @@
                             bar: { groupWidth: "60%" },
                             hAxis : { 
                             textStyle : {
+                                color: '#FFF',
                                 fontSize: 18 // or the number you want
                             }
                             },
                             vAxis : { 
                             textStyle : {
-                                fontSize: 18 // or the number you want
+                                fontSize: 18, // or the number you want
+                                color: '#FFF'
                             }
                             },
+                            chartArea: {
+                                backgroundColor: {
+                                fill: 'black',
+                                fillOpacity: 0
+                                },
+                            },
+                            
                         };
                     
                         var chart = new google.charts.Bar(document.getElementById("{{ data.title }}"));
@@ -73,16 +86,47 @@
                             drawStuff();
                         });
                     </script>
-                    <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom{{ data.title }}" aria-labelledby="offcanvasBottom{{ data.title }}" style="height: 80%; overflow-y: hidden !important;">
+                    <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom{{ data.title }}" aria-labelledby="offcanvasBottom{{ data.title }}" style="height: 80%; overflow-y: hidden !important; background-color: rgba(0, 0, 0, 0.7);">
                         <div class="container justify-content-center">
-                        <div class="offcanvas-header">
-                        <h5 class="offcanvas-title" id="offcanvasBottomLabel">{{ data.title }}</h5>
-                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        <div class="offcanvas-header" style="display: block;">
+                            <button type="button" class="btn-close btn-close-white text-reset" data-bs-dismiss="offcanvas" aria-label="Close" style="size: 15vh; float:right; padding-bottom: 5vh;"></button>
+                        </div>
+                        
                         </div>
                         <div class="offcanvas-body large" style="overflow-y: hidden !important; overflow-y: hidden !important;">
-                        <div class="col-8">
-                        <div id="{{ data.title }}" class="chart" style="width: 100%; min-height: 500px; color:wheat"></div>
-                        </div>
+                            <div class="row">
+                                <div class="col-7">
+                                    <div id="{{ data.title }}" class="chart" style="width: 90%; min-height: 500px; color:wheat; padding-bottom: 3vh; padding-left: 5vw;"></div>
+                                </div>
+                                <div class="col-4" style="align-items:flex-start">
+                                    <div>
+                                        <div class="row-2" style="padding-top: 0vh; padding-left: 0vw;">
+                                            <span style="font-size: 22px; font-weight: bold;"> Humør </span>
+                                            <span style="font-size: 22px; float:right;">{{ data.dominant }}</span>
+                                        </div>
+                                        <hr style="color: white; opacity: 1;">
+                                        <div class="row-2" style="padding-top: 3vh; padding-left: 0vw;">
+                                            <span style="font-size: 22px; font-weight: bold;"> Alder </span>
+                                            <span style="font-size: 22px; float:right;">{{ data.age }}</span>
+                                        </div>
+                                        <hr style="color: white; opacity: 1;">
+                                        <div class="row-2" style="padding-top: 3vh; padding-left: 0vw;">
+                                            <span style="font-size: 22px; font-weight: bold;"> Køn </span>
+                                            <span style="font-size: 22px; float:right;">{{ data.gender }}</span>
+                                        </div>
+                                        <hr style="color: white; opacity: 1;">
+                                        <div class="row-2" style="padding-top: 3vh; padding-left: 0vw;">
+                                            <span style="font-size: 22px; font-weight: bold;"> Størrelse </span>
+                                            <span style="font-size: 22px; float:right;">{{ data.faces }}</span>
+                                        </div>
+                                        <hr style="color: white; opacity: 1;">
+                                        <div class="row-2" style="padding-top: 3vh; padding-left: 0vw;">
+                                            <span style="font-size: 22px; font-weight: bold;"> Oprettet </span>
+                                            <span style="font-size: 22px; float:right;">{{ data.created_at }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         </div>
                     </div>

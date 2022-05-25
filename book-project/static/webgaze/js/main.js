@@ -1,6 +1,9 @@
 var check = 0;
 var data_scatter = [];
 var isRecording = false;
+var up = 0;
+var screen = 0;
+var down = 0;
 window.onload = async function() {
 
     webgazer.params.showVideoPreview = true;
@@ -10,11 +13,19 @@ window.onload = async function() {
         .setGazeListener(function(data, clock) {
             // console.log(data);
             if(data != null){
-                document.getElementById("pred-x").innerText = "Prediction-X: " + parseInt(data.x);
-                document.getElementById("pred-y").innerText = "Prediction-Y: " + parseInt(data.y);
             }
             if(isRecording){
-                data_scatter.push([data.x, data.y])
+                data_scatter.push([data.x, -data.y])
+                if(-data.y > -100){
+                  up++;
+                }
+                if(-data.y < -600){
+                  down++;
+                }
+                if(-data.y < -100 && -data.y > -600){
+                  screen++;
+                }
+
             }
             
              /* data is an object containing an x and y key which are the x and y prediction coordinates (no bounds limiting) */
@@ -64,6 +75,7 @@ window.onload = async function() {
     document.getElementById("button-start").disabled = false;
     document.getElementById("button-stop").disabled = true;
     isRecording = false;
+    console.log(data_scatter)
     clearInterval(Interval);
   }
 
@@ -85,10 +97,10 @@ window.onload = async function() {
   }
 
   buttonSubmit.onclick = function() {
-    document.forms['data_form'].elements['up'].value = 1;
-    document.forms['data_form'].elements['screen'].value = 2;
-    document.forms['data_form'].elements['down'].value = 3;
-    document.forms['data_form'].elements['size'].value = 10;
+    document.forms['data_form'].elements['up'].value = up;
+    document.forms['data_form'].elements['screen'].value = screen;
+    document.forms['data_form'].elements['down'].value = down;
+    document.forms['data_form'].elements['size'].value = data_scatter.length;
     csv_data = JSON.stringify(data_scatter)
     document.forms['data_form'].elements['data'].value = csv_data;
     document.forms['data_form'].submit();
@@ -110,7 +122,6 @@ window.onload = async function() {
     } 
     
     if (tens > 99) {
-      console.log("seconds");
       seconds++;
       appendSeconds.innerHTML = "0" + seconds;
       tens = 0;
@@ -183,7 +194,6 @@ function drawChart() {
     chart.draw(data, options);
 }
 $(window).resize(function(){
-    console.log(data_scatter)
     drawChart();
 });
 

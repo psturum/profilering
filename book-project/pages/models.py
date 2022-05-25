@@ -37,7 +37,7 @@ class Gaze_data(models.Model):
     screen = models.IntegerField(default=0)
     down = models.IntegerField(default=0)
     size = models.IntegerField(default=0)
-    # created_at = models.DateTimeField(auto_now_add=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
     data = models.JSONField()
 
 
