@@ -29,15 +29,13 @@ async function updateResults() {
     const canvas = $('#overlay').get(0)
     const ts = Date.now()
     const displaySize = { width: videoEl.width, height: videoEl.height }
-
+    console.log(1)
     const result = await faceapi
               .detectSingleFace(videoEl)
               .withFaceExpressions()
               .withAgeAndGender();
- 
-
     updateTimeStats(Date.now() - ts)
-
+    console.log(2)
     if (result) {
       const canvas = $('#overlay').get(0)
       const dims = faceapi.matchDimensions(canvas, videoEl, true)
@@ -54,14 +52,13 @@ async function updateResults() {
         update_data();
         age.push(result.age)
         gender.push(result.gender)
-        console.log(result.age)
-        console.log(result.gender)
         document.getElementById("age").innerText = "Alder: " + parseInt(result.age)
         document.getElementById("gender").innerText = "Køn: " + result.gender
       }
     }
 
-    setTimeout(() => updateResults())
+    // setTimeout(() => updateResults(500))
+    setTimeout(updateResults, 500);
 
 }
 
@@ -69,10 +66,12 @@ async function setup() {
   await faceapi.loadSsdMobilenetv1Model(MODEL_URL)
   await faceapi.loadFaceExpressionModel(MODEL_URL)
   await faceapi.loadAgeGenderModel(MODEL_URL)
+  document.getElementById('button-start').disabled = false;
 
   const stream = await navigator.mediaDevices.getUserMedia({ video: {} })
   const videoEl = $('#inputVideo').get(0)
   videoEl.srcObject = stream
+  
 }
 
 function formatRecords() {
@@ -318,8 +317,6 @@ function drawStuff() {
   };
 
   var chart = new google.charts.Bar(document.getElementById("graph"));
-  var title = "title..."
-  console.log(title)
   // Convert the Classic options to Material options.
   chart.draw(data, google.charts.Bar.convertOptions(options));
 };
@@ -336,6 +333,7 @@ function update_data() {
 
   let labels = [];
   key_scores.forEach(function(val, i) {
+    console.log('ehm?')
     labels.push(i);
   });
 

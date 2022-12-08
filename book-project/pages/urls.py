@@ -1,14 +1,12 @@
 from django.urls import path
 
-from .views import HomePageView, DataPageView, ProgramPageView, EmotionPageView, EmotionDataPageView, GazePageView, GazeDataPageView, ProfilePageView
+from .views import HomePageView, EmotionPageView, EmotionDataPageView, ProfilePageView, graph1PageView, graph2PageView
 
 urlpatterns = [
-    path('', HomePageView.as_view(), name='home'),
+    path('', HomePageView, name='home'),
     path('profile/', ProfilePageView, name='profile'),
-    path('data/', DataPageView, name='data'),
+    path('visualisering/humør-klokkeslæt', graph1PageView, name='graph1'),
+    path('visualisering/oversigt', graph2PageView, name='graph2'),
     path('data/emotion', EmotionDataPageView, name='emotion_data'),
-    path('data/gaze', GazeDataPageView, name='gaze_data'),
-    path('programs/', ProgramPageView, name='programs'),
     path('programs/emotion/', EmotionPageView, name='emotion'),
-    path('programs/gaze/', GazePageView, name='gaze'),
 ]

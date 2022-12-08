@@ -5,6 +5,11 @@
 {% block title %}Hjem{% endblock %}
 
 {% block content %}
+<script>
+    window.addEventListener("load", (event) => {
+        console.log("{{ check_1 }}");
+    });
+</script>
 <link rel="stylesheet" href="/static/style.css" />
 <main class="container mt-4 mt-lg-5">
     <div class="container justify-content-center">
@@ -29,11 +34,6 @@
                     <img class="img-fluid img_home1" src="{% static 'img/drama.png' %}" class="d-block w-100" alt="...">
                     </div>
                 </div>
-                <div class="carousel-item">
-                    <div class="d-flex justify-content-center">
-                    <img class="img-fluid img_home1" src="{% static 'img/eye2.png' %}" class="d-block w-100" alt="...">
-                    </div>
-                </div>
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -46,12 +46,17 @@
             </div>
         </div>
         <div class="col-lg-6">
-            <h1 class="font-weight-light">Profilering Apps</h1>
-            <p>Her kan du eksperimentere med de to AI modeller: Gaze-detection & Emotion-detection. Gaze-detection kan tracke retningen på dit blik, 
-                og orienteringen på dit hoved. Emotion-detection kan tracke humør, alder, køn, samt forskellen mellem to ansigter. Resultaterne kan gemmes efter hvert eksperiment, og derefter tilgåes under fanen "Data".
-            
+            <h1 class="font-weight-light">Emotion Detection</h1>
+            <p>Her er det muligt køre eksperimenter ved hjælp af AI modellen Emotion Detection. Det er eksempeltvis muligt at undersøge, hvorvidt der er en sammenhæng mellem humør og tid på dagen, ved at indsamle nok data.
+                
             </p>
-            <a href="{% url 'data' %}"> <button class="btn btn-outline-light btn-lg" data-mdb-ripple-color="dark" href="{% url 'programs' %}">Apps <i class="fa-brands fa-app-store"></i></button></a>
+            <p>
+                Emotion Detection kan igennem videoinput fra dit webcam, både tracke humør, alder, og biologisk køn. Resultaterne kan gemmes efter hvert eksperiment, og derefter tilgåes under fanen "Data".
+            </p>
+                <a href="{% url 'emotion' %}" class="btn btn-outline-success btn-lg mb-3">
+                    <i class="fa-solid fa-circle-play"></i>
+                    Start Eksperiment
+                </a>
         </div>
     </div>
 </div>
@@ -61,18 +66,20 @@
     <div class="row gx-4 gx-lg-5 align-items-center my-5 wrapreverse">
         <div class="col-lg-6" >
             <h1 class="font-weight-light">Data Visualisering</h1>
-            <p >Dataen fra eksperimenterne bliver automatisk gemt under fanen data, hvor du kan sammenligne din data, med data fra dine klassekammerater og andre gymnasier i Danmark. Der er også mulighed for at se grafer, og hente csv(data) filer fra tidligere eksperimenter. </p>
-            <div class="dropdown">
-                <button class="btn btn-outline-light btn-lg dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                  Data
-                  <i class="fa fa-chart-column"></i>
+            <p >Dataen fra eksperimenterne bliver automatisk gemt under fanen "Mine Eksperimenter", hvor du kan tilgå tidligere udførte eksperimenter og downloade tilhørende data.</p> 
+            <p> Du kan se visualiseringer af din samlede data under fanen "Visualisering", hvor du kan se en oversigt over din samlede data, samt plotte humør som funktion af tilsvarende klokkeslæt. </p>
+            <div class="btn-group">
+                <button class="btn btn-outline-light btn-lg" data-mdb-ripple-color="dark" type="button" onclick="location.href='{% url 'emotion_data' %}';">Mine Eksperimenter <i class="fa fa-database"></i></button> 
+                <button class="btn btn-outline-light btn-lg dropdown dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    Visualisering
                 </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" style="background-color: rgba(0,0,0,0.85);">
-                  <li><a class="dropdown-item" href="{% url 'emotion_data' %}" style="color: white;">Emotion</a></li>
-                  <li><a class="dropdown-item" href="{% url 'gaze_data' %}" style="color: white;">Gaze</a></li>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item" href="{% url 'graph2' %}">Oversigt</a></li>
+                    <li><a class="dropdown-item" href="{% url 'graph1' %}">Humør/Tid</a></li>
                 </ul>
             </div>
         </div>
+    
         <div class="col-lg-6">
             <div id="carouselExampleControls1" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
@@ -83,7 +90,7 @@
                 </div>
                 <div class="carousel-item">
                     <div class="d-flex justify-content-center">
-                    <img class="img-fluid img_home1 " src="{% static 'img/scatter1.png' %}" class="d-block w-100" alt="..." style="width: 30vw !important;">
+                    <img class="img-fluid img_home1 " src="{% static 'img/graf2.png' %}" class="d-block w-100" alt="..." style="width: 30vw !important;">
                     </div>
                 </div>
                 </div>
@@ -129,15 +136,54 @@
         </div>
         <div class="col-lg-6" style="position: relative;">
             <h1 class="font-weight-light">Data Indsamling</h1>
-            <p>Hvis du går ind på fanen 'Min Profil' vil du måske bemærke, at profilen indeholder information, som ikke blev angivet ved oprettelse.
-                Den data bliver indsamlet og opdateret ved hvert eksperiment, og ville kunne bruges til profilering og marketing. Idéen er at simulere
-                hvordan it-virksomheder høster din data, for så at sælge den for profit, eller anvende den til 'targeting ads'.
-
+            <p>Hvis du efter et eksperiment går ind på fanen 'Min Profil', vil du måske bemærke, at profilen indeholder information, som ikke blev angivet ved oprettelse.
+                Den data bliver indsamlet og opdateret ved hvert eksperiment, og kan bruges til profilering og marketing. 
             </p>
-            <a href="{% url 'data' %}"> <button class="btn btn-outline-light btn-lg" data-mdb-ripple-color="dark" href="{% url 'profile' %}">Profil <i class="fa-regular fa-user"></i></button></a>    
+            <p>    
+                Tryk på knappen 'Vis Reklame', for at se en reklame skræddersyet til din marketingsdata. Under 'Min Profil' er det muligt at genstarte marketingsdata, således man kan udforske de forskellige reklamer.
+            </p>
+            <div class="btn-group">
+                <button class="btn btn-outline-light btn-lg" data-mdb-ripple-color="dark" type="button" onclick="location.href='{% url 'profile' %}';">Profil <i class="fa-regular fa-user"></i></button> 
+                <button class="btn btn-outline-light btn-lg" data-mdb-ripple-color="dark" data-bs-toggle="modal" data-bs-target="#exampleModal">Vis reklame</i></button>
+            </div>
         </div>
 </div>
 </main>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="color: #181818;">
+    <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Reklame</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="color: white !important"></button>
+        </div>
+        <div class="modal-body" >
+            {% if user.reklame == 9 %}
+            <img class="img-fluid" src="{% static 'reklame/17år.png' %}" class="d-block w-100" alt="..." style="width: 100vw !important;">
+            {% elif user.reklame == 8 %}
+            <img class="img-fluid" src="{% static 'reklame/koncentration.jpeg' %}" class="d-block w-100" alt="..." style="width: 100vw !important;">
+            {% elif user.reklame == 7 %}
+            <img class="img-fluid" src="{% static 'reklame/happy.jpeg' %}" class="d-block w-100" alt="..." style="width: 100vw !important;">
+            {% elif user.reklame == 6 %}
+            <img class="img-fluid" src="{% static 'reklame/angry.jpeg' %}" class="d-block w-100" alt="..." style="width: 100vw !important;">
+            {% elif user.reklame == 5 %}
+            <img class="img-fluid" src="{% static 'reklame/sad.jpeg' %}" class="d-block w-100" alt="..." style="width: 100vw !important;">
+            {% elif user.reklame == 4 %}
+            <img class="img-fluid" src="{% static 'reklame/female.jpeg' %}" class="d-block w-100" alt="..." style="width: 100vw !important;">
+            {% elif user.reklame == 3 %}
+            <img class="img-fluid" src="{% static 'reklame/male.jpeg' %}" class="d-block w-100" alt="..." style="width: 100vw !important;">
+            {% elif user.reklame == 2 %}
+            <img class="img-fluid" src="{% static 'reklame/samfundsfag.jpeg' %}"  alt="..." style="width: 200vw !important;">
+            {% else %}
+            <img class="img-fluid" src="{% static 'reklame/informatik.jpeg' %}" class="d-block w-100" alt="..." style="width: 100vw !important;">
+            {% endif %}
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tilbage</button>
+        </div>
+    </div>
+    </div>
+</div> 
 
 {% endblock content %}
 {% block footer %}

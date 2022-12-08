@@ -9,7 +9,7 @@ class CustomUserAdmin(UserAdmin):
     add_form = MyUserCreationForm
     form = MyUserChangeForm
     model = CustomUser
-    list_display = ['username', 'skole', 'fag', 'alder', 'køn', 'koncentrationsevne', 'sidste_humør', 'avg_humør', 'it_færdighed', 'reklame']
+    list_display = ['username', 'skole', 'fag', 'alder', 'køn', 'sidste_humør', 'avg_humør', 'it_færdighed', 'reklame']
     fieldsets = UserAdmin.fieldsets + (
             (None, {'fields': ('skole', 'fag', 'reklame')}),
     ) #this will allow to change these fields in admin module

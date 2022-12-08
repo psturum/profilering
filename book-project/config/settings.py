@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'picklefield',
 ]
 
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -106,9 +108,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/dev/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'da'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Copenhagen'
 
 USE_I18N = True
 
@@ -149,3 +151,5 @@ ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True # new
 ACCOUNT_AUTHENTICATION_METHOD = 'username' # new
 ACCOUNT_USERNAME_REQUIRED = True # new
 ACCOUNT_UNIQUE_USERNAME = True # new
+
+DATA_UPLOAD_MAX_MEMORY_SIZE = None

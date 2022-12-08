@@ -7,23 +7,41 @@ from django.contrib.auth.decorators import login_required
 from pandas import json_normalize
 from pathlib import Path  
 import pandas as pd
+import math
 
-from .models import Emotion_data, Gaze_data
-from .forms import Emotion_data_Form, Gaze_data_Form
+from .models import Emotion_data
+from .forms import Emotion_data_Form
 import random
 
 
 # Create your views here.
 #
-class HomePageView(TemplateView):
-    template_name = 'home.html'
+@login_required
+def HomePageView(request):
+    emotion_data = Emotion_data.objects.filter(
+        created_by=request.user)
+    context = {}
+    if(len(emotion_data) > 0):
+        latest = emotion_data[0]
+        latest_mood = latest.dominant
+
+    return render(request, "home.html", context)
+    
+
+
 
 @login_required
 def ProfilePageView(request):
+    emotion_data = Emotion_data.objects.filter(
+        created_by=request.user).order_by('-created_at')
+    if(len(emotion_data) > 0):
+        request.user.sidste_humør = emotion_data[0].dominant
+    else:
+        request.user.sidste_humør = "n/a"
+        
     if 'reset_data_id' in request.POST:
         request.user.alder = 0
         request.user.køn = "n/a"
-        request.user.koncentrationsevne = "n/a"
         request.user.sidste_humør = "n/a"
         
         if(request.user.fag == "Informatik"):
@@ -38,8 +56,75 @@ def ProfilePageView(request):
     return render(request, "profile.html")
 
 @login_required
-def DataPageView(request):
-    return render(request, "data.html")
+def graph1PageView(request):
+    context ={}
+    y_happy = []
+    y_sad = []
+    y_angry = []
+    y_disgusted = []
+    y_neutral = []
+    y_surprised = []
+    y_fearful = []
+    x_time = []
+    emotion_data = Emotion_data.objects.filter(
+        created_by=request.user).order_by('created_at__hour', 'created_at__minute')
+    
+    for data in emotion_data:
+        y_happy += [float(data.happy/data.faces)]
+        y_angry += [float(data.angry/data.faces)]
+        y_surprised += [float(data.surprised/data.faces)]
+        y_disgusted += [float(data.disgusted/data.faces)]
+        y_neutral += [float(data.neutral/data.faces)]
+        y_fearful += [float(data.fearful/data.faces)]
+        y_sad += [float(data.sad/data.faces)]
+        if(float(data.created_at.time().hour) == 23):
+            x_time.append([0, float(data.created_at.time().minute), float(data.created_at.time().second)])
+        else:
+            x_time.append([1+float(data.created_at.time().hour), float(data.created_at.time().minute), float(data.created_at.time().second)])
+
+    context['x'] = x_time
+    context['happy'] = y_happy
+    context['angry'] = y_angry
+    context['neutral'] = y_neutral
+    context['disgusted'] = y_disgusted
+    context['sad'] = y_sad
+    context['surprised'] = y_surprised
+    context['fearful'] = y_fearful
+    return render(request, "graph_1.html", context)
+
+@login_required
+def graph2PageView(request):
+    context ={}
+    y_happy = 0
+    y_sad = 0
+    y_angry = 0
+    y_disgusted = 0
+    y_neutral = 0
+    y_surprised = 0
+    y_fearful = 0
+    face = 0
+    emotion_data = Emotion_data.objects.filter(
+        created_by=request.user)
+
+    for data in emotion_data:
+        y_happy += float(data.happy)
+        y_angry += float(data.angry)
+        y_surprised += float(data.surprised)
+        y_disgusted += float(data.disgusted)
+        y_neutral += float(data.neutral)
+        y_fearful += float(data.fearful)
+        y_sad += float(data.sad)
+        face += data.faces
+
+    if(face > 0):
+        context['happy'] = str(y_happy/face)
+        context['angry'] = str(y_angry/face)
+        context['neutral'] = str(y_neutral/face)
+        context['disgusted'] = str(y_disgusted/face)
+        context['sad'] = str(y_sad/face)
+        context['surprised'] = str(y_surprised/face)
+        context['fearful'] = str(y_fearful/face)
+    return render(request, "graph_2.html", context)
 
 @login_required
 def EmotionDataPageView(request):
@@ -65,55 +150,6 @@ def EmotionDataPageView(request):
     emotion_data = Emotion_data.objects.filter(
         created_by=request.user).order_by('-created_at')
     return render(request, "data_emotion.html", {'emotion_data': emotion_data})
-
-@login_required
-def GazeDataPageView(request):
-    if 'delete_data_id' in request.POST:
-        delete_data_id = request.POST['delete_data_id']
-        data = get_object_or_404(Gaze_data, id=delete_data_id)
-        data.delete()
-        return HttpResponseRedirect(reverse("gaze_data"))
-    
-    if 'download_data_id' in request.POST:
-        download_data_id = request.POST['download_data_id']
-        data = get_object_or_404(Gaze_data, id=download_data_id)
-        json_data = data.data
-        df = pd.DataFrame(json_data) 
-
-        # """ SAVE CSV-FILE TO /static """
-        filepath = Path('static/data/csv/emotion_data' + str(data.title) + '.csv')   
-        df.to_csv(filepath) 
-
-        response = FileResponse(open(filepath, 'rb'))
-        return response
-
-    gaze_data = Gaze_data.objects.filter(
-        created_by=request.user).order_by('-created_at')
-    return render(request, "data_gaze.html", {'gaze_data': gaze_data})
-
-@login_required
-def ProgramPageView(request):
-    return render(request, "programs.html")
-
-@login_required
-def GazePageView(request):
-    context = {}
-    
-    # create object of form
-    form = Gaze_data_Form(request.POST)
-    # check if form data is valid
-    print(form.is_valid())
-    if form.is_valid():
-        # save the form data to model
-        new_Gaze_data = form.save(commit=True)
-        new_Gaze_data.created_by = request.user
-        new_Gaze_data.title = random.randint(0,1000000)
-        new_Gaze_data.save()
-
-        return HttpResponseRedirect(reverse("gaze_data"))
-    
-    context['data_form'] = form
-    return render(request, "gaze.html", context)
 
 @login_required
 def EmotionPageView(request):

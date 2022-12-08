@@ -11,3 +11,5 @@ MarkupSafe==1.1.0
 numpy==1.15.4
 pkg-resources==0.0.0
 Werkzeug==0.14.1
+pandas
+django-encrypted-model-fields

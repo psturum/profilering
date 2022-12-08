@@ -9,6 +9,8 @@
         {% if emotion_data %}
             <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+            <script>let txt = document.createElement("textarea");</script>
+
             <table class="table table-light table-hover" style="--bs-table-bg: #181818; color: white;">
 
                 <thead class="table-dark cream" style="--bs-table-bg: #181818">
@@ -24,13 +26,15 @@
                 </thead>
                 <tbody>
                 {% for data in emotion_data %}
-
                     <script type="text/javascript">
                         
+                            
                         google.charts.load('current', {'packages':['bar']});
                         google.charts.setOnLoadCallback(drawStuff);
-                        
-                    
+                        str = '{{ data.data }}';
+                        txt.innerHTML = str;
+                        test = txt.value
+    
                         function drawStuff() {
                         var data = new google.visualization.arrayToDataTable([
                                 ['Humør', 'Antal observeret'],
@@ -62,10 +66,11 @@
                             }
                             },
                             vAxis : { 
-                            textStyle : {
-                                fontSize: 18, // or the number you want
-                                color: '#FFF'
-                            }
+                                title: 'Antal Observationer',
+                                textStyle : {
+                                    fontSize: 18, // or the number you want
+                                    color: '#FFF'
+                                }
                             },
                             chartArea: {
                                 backgroundColor: {
@@ -76,8 +81,8 @@
                             
                         };
                     
-                        var chart = new google.charts.Bar(document.getElementById("{{ data.title }}"));
-                        var title = "{{ data.title }}"
+                        var chart = new google.charts.Bar(document.getElementById("{{ data.title }}_"));
+                        var title = "{{ data.title }}_"
                         console.log(title)
                         // Convert the Classic options to Material options.
                         chart.draw(data, google.charts.Bar.convertOptions(options));
@@ -86,7 +91,7 @@
                             drawStuff();
                         });
                     </script>
-                    <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom{{ data.title }}" aria-labelledby="offcanvasBottom{{ data.title }}" style="height: 80%; overflow-y: hidden !important; background-color: rgba(0, 0, 0, 0.7);">
+                    <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom{{ data.title }}_" aria-labelledby="offcanvasBottom{{ data.title }}_" style="height: 80%; overflow-y: hidden !important; background-color: rgba(0, 0, 0, 0.7);">
                         <div class="container justify-content-center">
                         <div class="offcanvas-header" style="display: block;">
                             <button type="button" class="btn-close btn-close-white text-reset" data-bs-dismiss="offcanvas" aria-label="Close" style="size: 15vh; float:right; padding-bottom: 5vh;"></button>
@@ -96,7 +101,7 @@
                         <div class="offcanvas-body large" style="overflow-y: hidden !important; overflow-y: hidden !important;">
                             <div class="row">
                                 <div class="col-7">
-                                    <div id="{{ data.title }}" class="chart" style="width: 90%; min-height: 500px; color:wheat; padding-bottom: 3vh; padding-left: 5vw;"></div>
+                                    <div id="{{ data.title }}_" class="chart" style="width: 90%; min-height: 500px; color:wheat; padding-bottom: 3vh; padding-left: 5vw;"></div>
                                 </div>
                                 <div class="col-4" style="align-items:flex-start">
                                     <div>
@@ -133,7 +138,7 @@
                     
                         <td><a href="#">{{ data.title }}</a></td>
                         <td>
-                            <button type="button" id="{{ data.title }}" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom{{ data.title }}" aria-controls="offcanvasBottomLabel">
+                            <button type="button" id="{{ data.title }}_" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom{{ data.title }}_" aria-controls="offcanvasBottomLabel">
                                 Vis graf
                                 <i class="fa-solid fa-eye"></i>
                             </button>
@@ -185,6 +190,7 @@
                 function prepare_download(data_id){
                     document.getElementById('download_data_id').value = data_id;
                 }
+                
             </script>
 
             
@@ -195,14 +201,14 @@
                 <div class="modal-content dark">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Slet data</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body" id="modal-body">
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fortryd</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fortryd</button>
                         <button type="button" class="btn btn-danger" data-dismiss="modal"
                             onclick="document.getElementById('delete_data_form').submit()">Fjern</button>
                     </div>
@@ -211,5 +217,7 @@
         </div>
     </div>
 </main>
+{% else %}
+    <p>Du har ikke udført nogle eksperimenter endnu.</p>
 {% endif %}
 {% endblock %}
