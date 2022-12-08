@@ -29,13 +29,12 @@ async function updateResults() {
     const canvas = $('#overlay').get(0)
     const ts = Date.now()
     const displaySize = { width: videoEl.width, height: videoEl.height }
-    console.log(1)
     const result = await faceapi
               .detectSingleFace(videoEl)
               .withFaceExpressions()
               .withAgeAndGender();
     updateTimeStats(Date.now() - ts)
-    console.log(2)
+    
     if (result) {
       const canvas = $('#overlay').get(0)
       const dims = faceapi.matchDimensions(canvas, videoEl, true)
@@ -46,7 +45,7 @@ async function updateResults() {
         faceapi.draw.drawDetections(canvas, resizedResult)
       }
       faceapi.draw.drawFaceExpressions(canvas, resizedResult, minConfidence)
-
+      document.getElementById('button-start').disabled = false;
       if(isRecording){
         records.push(resizedResult);
         update_data();
@@ -66,7 +65,7 @@ async function setup() {
   await faceapi.loadSsdMobilenetv1Model(MODEL_URL)
   await faceapi.loadFaceExpressionModel(MODEL_URL)
   await faceapi.loadAgeGenderModel(MODEL_URL)
-  document.getElementById('button-start').disabled = false;
+
 
   const stream = await navigator.mediaDevices.getUserMedia({ video: {} })
   const videoEl = $('#inputVideo').get(0)
@@ -179,7 +178,7 @@ function removeEl(array, remIdx) {
  };
 
 window.onload = function () {
-  
+
   var seconds = 00; 
   var tens = 00; 
   var appendTens = document.getElementById("tens")

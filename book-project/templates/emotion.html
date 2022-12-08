@@ -38,9 +38,11 @@
                 </form>
             
                 <div style="position: relative;">
-                  <video class="card-img-top"  onloadedmetadata="updateResults(this)" id="inputVideo" autoplay muted playsinline></video>
+                  <video class="card-img-top" poster="{% static 'img/loading.gif' %}" onloadedmetadata="updateResults(this)" id="inputVideo" autoplay muted playsinline></video>
                   <canvas class="card-img-top" id="overlay" />
                 </div>
+
+
                 <div class="card-body text-center">
                     <h5 class="card-title light text-start">Emotion Detection</h5>
                     <p class="card-text text-start">Denne AI model forudsiger ikke kun humør. Den kan også estimere dit køn og alder, hvilket profileringsappen udnytter til at udvikle marketing-data tilkoblet din profil.</p>
@@ -48,7 +50,7 @@
 
                     <div class="btn-group" id="group1" role="group" style="display: inline-flex;" aria-label="Basic checkbox toggle button group">
                       <!-- <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off"> -->
-                      <button class="btn btn-success " id="button-start" for="btncheck1" onclick="">Start <i class="fa-solid fa-circle-play"></i></button>
+                      <button class="btn btn-success " id="button-start" for="btncheck1" onclick="" disabled>Start <i class="fa-solid fa-circle-play"></i></button>
                     
                       <!-- <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off"> -->
                       <button class="btn btn-danger" id="button-stop" for="btncheck2" disabled>Stop <i class="fa-solid fa-circle-stop"></i></button>                  
